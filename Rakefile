@@ -330,7 +330,11 @@ which are simply available in the repository.
     ### extra_args = "-t simp_#{version}" if version
     cmd = "sphinx-build -E -n #{extra_args} -b html -d sphinx_cache docs html"
     puts "== #{cmd}"
-    %x(#{cmd} > /dev/null)
+    if ENV['SIMP_BUILD_verbose'] == 'yes'
+      sh cmd
+    else
+      %x(#{cmd} > /dev/null)
+    end
   end
 
   desc 'build HTML docs (single page)'

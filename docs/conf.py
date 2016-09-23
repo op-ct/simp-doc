@@ -74,7 +74,20 @@ github_version_targets = [
 # If we're running on ReadTheDocs, we should go fetch the content from the
 # actual branch that we're using
 if on_rtd:
-    github_version_targets.insert(0,os.environ.get('READTHEDOCS_VERSION'))
+    _tmp = os.environ.get('READTHEDOCS_VERSION')
+    version_list = _tmp.split('.')
+    _version = '.'.join(version_list[0:2]).strip() + '.X'
+    _version = re.sub('^5.2', '5.1', _version)
+    _version = re.sub('^4.3', '4.2', _version)
+    _match = re.match( '^(\d\.\d+\.\d+)-(\d)+$', _tmp )
+    if _match:
+       version = _match.group(1)
+       release = _match.group(2)
+       github_version_targets.insert(0, _tmp )
+       print( "==== version= %s" % version )
+       print( "==== release= %s" % release )
+       print( "==== github_version_targets= %s" % github_version_targets )
+
 
 # This should be fixed once we move back to the master branch for all mainline
 # work.
@@ -129,6 +142,11 @@ else:
 # This is in reverse order so that it's easier to insert
 github_version_targets.insert(_insert_target, version_family)
 github_version_targets.insert(_insert_target,'simp-' + version_family)
+print( "==== github_version_targets= %s" % github_version_targets )
+print( "==== version= %s" % version )
+print( "==== release= %s" % release )
+print( "==== full_version= %s" % full_version )
+print( "==== version_family= %s" % version_family )
 
 # If we have some sort of valid release, shove it on the stack too.
 if release != 'NEED_FULL_SIMP_BUILD_TREE':
@@ -193,6 +211,11 @@ epilog.append('.. |simp_version| replace:: %s' % full_version)
 
 el_version = ".".join([el_major_version, el_minor_version])
 epilog.append('.. |el_version| replace:: %s' % el_version)
+print( "==== github_version_targets='%s'" % github_version_targets )
+print( "==== version='%s'" % version )
+print( "==== release='%s'" % release )
+print( "==== el_version='%s'" % el_version )
+###quit()
 
 def setup(app):
     app.add_config_value('simp_version', full_version, 'env') # The third value must always be 'env'
