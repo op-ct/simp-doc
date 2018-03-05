@@ -19,6 +19,7 @@ https://github.com/simp/pupmod-simp-ssh/blob/master/manifests/server/conf.pp#L24
 How do I manage additional settings for SSH?
 ============================================
 
+The simp
 In the meanwhile, users can customize their
 ssh_config configuration by editing $HOME/.ssh/config.
 
