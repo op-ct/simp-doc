@@ -22,6 +22,7 @@ its development branch.
 
    simp_puppet_module_release_procedures/Pre_Release_Checklist
    simp_puppet_module_release_procedures/Release_GitHub_and_Deploy_PuppetForge
+   simp_puppet_module_release_procedures/Pre_Release_RPM
 
 .. _GitHub: https://github.com
 .. _PuppetForge: https://forge.puppet.com

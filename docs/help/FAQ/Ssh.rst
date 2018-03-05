@@ -25,5 +25,5 @@ ssh_config configuration by editing $HOME/.ssh/config.
 
 
 .. _augeasproviders_ssh: http://augeasproviders.com/documentation/examples.html#sshdconfig-provider
-.. _augeasproviders_ssh: https://github.com/hercules-team/augeasproviders_ssh#sshd_config-provider
+.. _augeasproviders_ssh_gh: https://github.com/hercules-team/augeasproviders_ssh#sshd_config-provider
 .. _LogLevel: https://www.ssh.com/ssh/sshd_config/#sec-Verbose-logging

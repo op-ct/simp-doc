@@ -393,8 +393,6 @@ which are simply available in the repository.
   task :html => [:lint] do
     extra_args = ''
     ### TODO: decide how we want this task to work
-    ### version = File.open('build/simp-doc.spec','r').readlines.select{|x| x =~ /^%define simp_major_version/}.first.chomp.split(' ').last
-    ### extra_args = "-t simp_#{version}" if version
     cmd = "sphinx-build -E -n #{extra_args} -b html -d sphinx_cache docs html"
     run_build_cmd(cmd)
   end
