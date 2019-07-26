@@ -1,3 +1,5 @@
+.. _ug-sa-env-local-module-repositories:
+
 Local Module Repositories
 -------------------------
 
