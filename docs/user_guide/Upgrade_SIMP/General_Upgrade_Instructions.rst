@@ -41,8 +41,8 @@ documentation.
 .. IMPORTANT::
 
    Review any :ref:`ug-version-specific-upgrade-instructions` prior to
-   executing an Incremental Upgrade. There may be specific instructions
-   regarding the upgrade process that you should follow.
+   executing an Incremental Upgrade. There may be additional instructions
+   you need to follow for the versions involved.
 
 .. _ug-incremental-upgrades-w-iso:
 
@@ -85,7 +85,9 @@ Incrementally upgrading systems using local repositories
 
 #. Generate the new ``Puppetfile.simp``
 
-   **Only do this step you are upgrading from version SIMP 6.4 or later.**
+   .. IMPORTANT::
+
+      **Only do this step you are upgrading from version SIMP 6.4 or later.**
 
    .. code-block:: sh
 
@@ -157,7 +159,6 @@ Incrementally upgrading systems using local repositories
        ``git`` repository (the ones that use the ``:local => true`` directive),
        you should seriously consider creating a ``git`` repository for it to
        make sure it does not get removed by ``r10k``.
-
 #. Deploy the modules from the local ``git`` repositories into the Environment
 
    **Only do this step you are upgrading from version SIMP 6.4 or later.**
