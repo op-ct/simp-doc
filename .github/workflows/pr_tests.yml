@@ -1,0 +1,114 @@
+# Run checks and test matrix on Pull Requests
+# ==============================================================================
+#
+# The testing matrix considers ruby/puppet versions supported by SIMP and PE:
+# ------------------------------------------------------------------------------
+# Release       Puppet   Ruby    EOL
+# PE 2019.8     6.22.1   2.5     2022-12 (LTS)
+#
+# https://puppet.com/docs/pe/2018.1/component_versions_in_recent_pe_releases.html
+# https://puppet.com/misc/puppet-enterprise-lifecycle
+# https://puppet.com/docs/pe/2018.1/overview/getting_support_for_pe.html
+# ==============================================================================
+#
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+#
+
+name: PR Tests
+on:
+  push:
+    branch: '*'
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+env:
+  PUPPET_VERSION: '~> 6'
+  BUILD_PDF: no
+
+
+
+jobs:
+  unit-simpver:
+    name: 'Unit test: SIMP version'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user -r requirements.txt
+          pip install pytest
+      - name: 'Unit test: SIMP version'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          pytest -x --capture=no docs/conflib/get_simp_version_test.py
+
+  unit-relmap:
+    name: 'Unit test: Release mapping'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user -r requirements.txt
+          pip install pytest
+      - name: 'Unit test: Release mapping'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          pytest -x --capture=no docs/conflib/release_mapping_test.py
+      # TODO allow failure
+
+  build-html:
+    name: 'Build test: HTML docs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user -r requirements.txt
+      - name: 'Build HTML docs'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          sphinx-build -n -b html -d sphinx_cache docs html
+
+  link-check:
+    name: 'Link Check'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user -r requirements.txt
+      - name: 'Build HTML docs'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          sphinx-build -E -n -b linkcheck docs linkcheck || ( cat linkcheck/output.txt ; false )
+
+#  dump_contexts:
+#    name: 'Examine Context contents'
+#    runs-on: ubuntu-16.04
+#    steps:
+#      - name: Dump contexts
+#        env:
+#          GITHUB_CONTEXT: ${{ toJson(github) }}
+#        run: echo "$GITHUB_CONTEXT"
+#
